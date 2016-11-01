@@ -1,6 +1,7 @@
 package com.movil.tesis.dao;
 
 import com.movil.tesis.model.ProductosYanbal;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -18,7 +19,9 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public ProductosYanbal checkExistence(String code) throws Exception {
         Session session = sessionFactory.getCurrentSession();
-        return (ProductosYanbal) session.get(ProductosYanbal.class, Integer.parseInt(code));
+        Query query = session.createQuery("from ProductosYanbal where codigoRapido = :code");
+        query.setParameter("code", Integer.parseInt(code));
+        return (ProductosYanbal) query.uniqueResult();
     }
 
 }
